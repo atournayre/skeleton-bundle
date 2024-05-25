@@ -1,0 +1,15 @@
+# Configuration loaded for your functional tests
+framework:
+  secret: ThisIsSecret
+  test: true
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  __NAMESPACE_YAML__\Tests\App\src\:
+    resource: '%kernel.project_dir%/src'
+
+__PACKAGE_NAME_UNDERSCORE__:

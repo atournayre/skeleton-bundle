@@ -1,0 +1,30 @@
+{
+  "type": "project",
+  "name": "__PACKAGE_NAME__",
+  "description": "__BUNDLE_DESCRIPTION__",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=__VERSION_PHP__",
+    "symfony/console": "__VERSION_SYMFONY__.*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^__VERSION_PHPSTAN__",
+    "phpunit/phpunit": "^__VERSION_PHPUNIT__",
+    "friendsofphp/php-cs-fixer": "^__VERSION_PHPCSFIXER__",
+    "symfony/browser-kit": "^__VERSION_SYMFONY__",
+    "symfony/framework-bundle": "^__VERSION_SYMFONY__",
+    "symfony/yaml": "^__VERSION_SYMFONY__"
+  },
+  "autoload": {
+    "psr-4": {
+      "__NAMESPACE_COMPOSER__\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "__NAMESPACE_COMPOSER__\\Tests\\": "tests/"
+    }
+  }
+}

@@ -1,0 +1,115 @@
+#!/usr/bin/env php
+<?php
+
+$authorEmailAddress = 'johndoe@example.com';
+$authorFullName = 'John Doe';
+$authorGithub = 'johndoe';
+$bundleName = 'Skeleton Bundle';
+$bundleDescription = 'My awesome bundle';
+$packageName = 'johndoe/skeleton-bundle';
+$namespace = 'JohnDoe\SkeletonBundle';
+$bundleClass = 'SkeletonBundle';
+// The namespace for Composer is the same as the namespace with double backslashes
+$namespaceComposer = 'JohnDoe\\\\SkeletonBundle';
+
+$excludedDirectories = [
+    'vendor',
+    '.idea',
+];
+
+// Define the versions of the tools
+$versionPhp = '8.3';
+$versionPhpStan = '1.10';
+$versionPhpUnit = '10.0';
+$versionPhpCsFixer = '3.1';
+$versionSymfony = '7.0';
+
+// Do not edit below this line
+
+$packageNameUnderscoreReplacements = [
+    '/' => '_',
+    '-bundle' => '',
+];
+$packageNameUnderscore = str_replace(array_keys($packageNameUnderscoreReplacements), array_values($packageNameUnderscoreReplacements), $packageName);
+
+// Personalize the files
+$patterns = [
+    '__AUTHOR_EMAIL_ADDRESS__' => $authorEmailAddress,
+    '__AUTHOR_FULLNAME__' => $authorFullName,
+    '__AUTHOR_GITHUB_USERNAME__' => $authorGithub,
+    '__BUNDLE_NAME_USER_FRIENDLY__' => $bundleName,
+    '__BUNDLE_DESCRIPTION__' => $bundleDescription,
+    '__BUNDLE_CLASS__' => $bundleClass,
+    '__CURRENT_YEAR__' => date('Y'),
+    '__PACKAGE_NAME__' => $packageName,
+    '__PACKAGE_NAME_UNDERSCORE__' => $packageNameUnderscore,
+    '__NAMESPACE__' => $namespace,
+    '__NAMESPACE_COMPOSER__' => $namespaceComposer,
+    '__NAMESPACE_YAML__' => str_replace('\\\\', '\\', $namespace),
+    '__VERSION_PHP__' => $versionPhp,
+    '__VERSION_PHP_SHORT__' => substr($versionPhp, 0, 3),
+    '__VERSION_PHPSTAN__' => $versionPhpStan,
+    '__VERSION_PHPUNIT__' => $versionPhpUnit,
+    '__VERSION_PHPCSFIXER__' => $versionPhpCsFixer,
+    '__VERSION_SYMFONY__' => $versionSymfony,
+    'namespace Bundle' => 'namespace '.$namespace,
+    'MyBundleExtension' => 'MyBundleExtension',
+    'MyBundleBundle' => $bundleClass,
+];
+
+// Parcourir tous les fichiers de manière récursive, de tous les types, sauf le fichier configure
+$files = [
+    '.gitignore',
+    '.github/workflows/main.yaml.dist',
+    'phpunit.xml.dist',
+    'README.md',
+    'composer.json',
+    'Makefile',
+    '.php-cs-fixer.dist.php',
+    'config/services.php',
+    'tests/App/packages/config.yaml',
+    'tests/App/Func/FooTest.php',
+    'tests/App/Unit/FooTest.php',
+    'tests/App/AppKernel.php',
+    'CONTRIBUTING.md',
+    'src/MyBundleBundle.php',
+    'src/DependencyInjection/Configuration.php',
+    'src/DependencyInjection/MyBundleExtension.php',
+    'LICENSE',
+];
+foreach ($files as $file) {
+    $content = file_get_contents($file);
+    $content = str_replace(array_keys($patterns), array_values($patterns), $content);
+    file_put_contents($file, $content);
+}
+
+// Rename files
+$files = [
+    '.github/workflows/main.yaml.dist' => '.github/workflows/main.yaml',
+    'src/DependencyInjection/MyBundleExtension.php' => 'src/DependencyInjection/'.$bundleClass.'Extension.php',
+    'src/MyBundleBundle.php' => 'src/'.$bundleClass.'.php',
+    'phpunit.xml.dist' => 'phpunit.xml',
+];
+
+foreach ($files as $source => $destination) {
+    rename($source, $destination);
+}
+
+// Remove installation section from README
+$file = file_get_contents('README.md');
+$pattern = '/<!-- installation -->(.*)<!-- installation:end -->/s';
+$file = preg_replace($pattern, '', $file);
+file_put_contents('README.md', $file);
+
+// Install dependencies
+$command = 'composer install';
+exec($command, $output, $returnCode);
+
+if (0 !== $returnCode) {
+    echo 'An error occurred during composer install'.PHP_EOL;
+    exit(1);
+}
+
+echo 'Installation completed'.PHP_EOL;
+echo 'Remove the configure script'.PHP_EOL;
+exit(0);
